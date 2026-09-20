@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://smuwsu0bjhd2"]
+
+[ext_resource type="Script" uid="uid://bjxonrk4rnxfe" path="res://Player.cs" id="1_4flbx"]
+[ext_resource type="Texture2D" uid="uid://bf8l6ubf6f7pm" path="res://icon.svg" id="2_onrkg"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_25s18"]
+radius = 50.0
+height = 100.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_82v0y"]
+radius = 50.0
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_i3pqv"]
+resource_local_to_scene = true
+buffer_length = 0.1
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_xspuc"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D" unique_id=1621769056 node_paths=PackedStringArray("Listener", "Speakers", "Microphone")]
+motion_mode = 1
+script = ExtResource("1_4flbx")
+Listener = NodePath("Audio/AudioListener2D")
+Speakers = NodePath("Audio/Speakers")
+Microphone = NodePath("Audio/Microphone")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=2134534478]
+rotation = -3.1415925
+mesh = SubResource("SphereMesh_25s18")
+texture = ExtResource("2_onrkg")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=406196178]
+shape = SubResource("CircleShape2D_82v0y")
+metadata/_edit_lock_ = true
+
+[node name="Audio" type="Node2D" parent="." unique_id=1471512266]
+metadata/_edit_lock_ = true
+
+[node name="AudioListener2D" type="AudioListener2D" parent="Audio" unique_id=132517697]
+
+[node name="Speakers" type="AudioStreamPlayer2D" parent="Audio" unique_id=256622170]
+stream = SubResource("AudioStreamGenerator_i3pqv")
+bus = &"Voice"
+
+[node name="Microphone" type="AudioStreamPlayer" parent="Audio" unique_id=1025608214]
+stream = SubResource("AudioStreamMicrophone_xspuc")
+volume_db = 24.0
+bus = &"Capture"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1046335613]
+replication_config = SubResource("SceneReplicationConfig_onrkg")

@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cp5r02cko44d0"]
+
+[ext_resource type="Script" uid="uid://b6uegtn3wr8o5" path="res://Menu.cs" id="1_lti8b"]
+
+[node name="Menu" type="Control" unique_id=532150766 node_paths=PackedStringArray("AddressLineEdit", "PortLineEdit")]
+layout_mode = 3
+anchor_left = 0.3237847
+anchor_top = 0.5
+anchor_right = 0.6762153
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_lti8b")
+AddressLineEdit = NodePath("BoxContainer/BoxContainer/BoxContainer/AddressLineEdit")
+PortLineEdit = NodePath("BoxContainer/PortLineEdit")
+metadata/_edit_use_anchors_ = true
+
+[node name="BoxContainer" type="BoxContainer" parent="." unique_id=756401695]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -33.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="BoxContainer" unique_id=1166005821]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+alignment = 1
+vertical = true
+metadata/_edit_use_anchors_ = true
+
+[node name="HostButton" type="Button" parent="BoxContainer/BoxContainer" unique_id=835735082]
+layout_mode = 2
+text = "Host"
+
+[node name="BoxContainer" type="BoxContainer" parent="BoxContainer/BoxContainer" unique_id=1082939331]
+layout_mode = 2
+alignment = 1
+
+[node name="JoinButton" type="Button" parent="BoxContainer/BoxContainer/BoxContainer" unique_id=199709827]
+layout_mode = 2
+text = "Join"
+
+[node name="AddressLineEdit" type="LineEdit" parent="BoxContainer/BoxContainer/BoxContainer" unique_id=1725727325]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "spi3lot.duckdns.org"
+placeholder_text = "Address"
+alignment = 1
+
+[node name="PortLineEdit" type="LineEdit" parent="BoxContainer" unique_id=390720100]
+layout_mode = 2
+text = "25565"
+placeholder_text = "Port"
+alignment = 1
+
+[connection signal="pressed" from="BoxContainer/BoxContainer/HostButton" to="." method="OnHostButtonPressed"]
+[connection signal="pressed" from="BoxContainer/BoxContainer/BoxContainer/JoinButton" to="." method="OnJoinButtonPressed"]
