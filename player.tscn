@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bjxonrk4rnxfe" path="res://Player.cs" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://bf8l6ubf6f7pm" path="res://icon.svg" id="2_onrkg"]
+[ext_resource type="Script" uid="uid://rd5n63hl04tj" path="res://AudioTransmissionTimer.cs" id="3_i3pqv"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_25s18"]
 radius = 50.0
@@ -51,6 +52,13 @@ bus = &"Voice"
 stream = SubResource("AudioStreamMicrophone_xspuc")
 volume_db = 24.0
 bus = &"Capture"
+
+[node name="AudioTransmissionTimer" type="Timer" parent="Audio" unique_id=766830343]
+wait_time = 0.011609977
+ignore_time_scale = true
+script = ExtResource("3_i3pqv")
+PacketsPerSecond = 86.13281
+metadata/_custom_type_script = "uid://rd5n63hl04tj"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1046335613]
 replication_config = SubResource("SceneReplicationConfig_onrkg")
