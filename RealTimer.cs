@@ -1,12 +1,17 @@
+using System;
 using Godot;
 using Godot.Collections;
 
 namespace Proximity;
 
 [Tool]
-public partial class AudioTransmissionTimer : Timer
+public partial class RealTimer : Node
 {
-    public AudioTransmissionTimer() => Recalculate();
+    private double _timeSinceLastTimeout;
+
+    public RealTimer() => Recalculate();
+
+    public event Action Timeout;
 
     [Export]
     public int SamplesPerPacket
@@ -29,13 +34,17 @@ public partial class AudioTransmissionTimer : Timer
         set => UpdateAndRecalculate(value, out field);
     } = 1;
 
-    [Export] public float PacketsPerSecond { get; set; }
+    [Export] public bool Paused { get; set; }
+
+    [Export] public double PacketsPerSecond { get; set; }
+
+    [Export] public double WaitTime { get; set; }
 
     public override void _ValidateProperty(Dictionary property)
     {
         var propertyName = property["name"].AsStringName();
 
-        if (propertyName == PropertyName.PacketsPerSecond || propertyName == Timer.PropertyName.WaitTime)
+        if (propertyName == PropertyName.PacketsPerSecond || propertyName == PropertyName.WaitTime)
         {
             var usage = (PropertyUsageFlags) property["usage"].AsInt64();
             property["usage"] = (long) (usage | PropertyUsageFlags.ReadOnly);
@@ -52,6 +61,19 @@ public partial class AudioTransmissionTimer : Timer
     {
         float packetInterval = SamplesPerPacket / SamplesPerSecond;
         WaitTime = packetInterval * PacketIntervalMultiplier;
-        PacketsPerSecond = 1 / (float) WaitTime;
+        PacketsPerSecond = 1 / WaitTime;
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Engine.IsEditorHint() || Paused) return;
+
+        _timeSinceLastTimeout += delta;
+
+        while (_timeSinceLastTimeout >= WaitTime)
+        {
+            _timeSinceLastTimeout -= WaitTime;
+            Timeout?.Invoke();
+        }
     }
 }
