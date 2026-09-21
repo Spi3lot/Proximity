@@ -15,7 +15,6 @@ public partial class NetworkManager : Node
 
     public NetworkManager() => Instance = this;
 
-
     public override void _Notification(int what)
     {
         if (what == NotificationWMCloseRequest)

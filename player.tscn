@@ -22,12 +22,13 @@ properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[node name="Player" type="CharacterBody2D" unique_id=1621769056 node_paths=PackedStringArray("Listener", "Speakers", "Microphone")]
+[node name="Player" type="CharacterBody2D" unique_id=1621769056 node_paths=PackedStringArray("Listener", "Speakers", "Microphone", "AudioTransmissionTimer")]
 motion_mode = 1
 script = ExtResource("1_4flbx")
 Listener = NodePath("Audio/AudioListener2D")
 Speakers = NodePath("Audio/Speakers")
 Microphone = NodePath("Audio/Microphone")
+AudioTransmissionTimer = NodePath("Audio/AudioTransmissionTimer")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=2134534478]
 rotation = -3.1415925
@@ -53,13 +54,10 @@ stream = SubResource("AudioStreamMicrophone_xspuc")
 volume_db = 24.0
 bus = &"Capture"
 
-[node name="AudioTransmissionTimer" type="Timer" parent="Audio" unique_id=766830343]
-wait_time = 0.011609977
-ignore_time_scale = true
+[node name="AudioTransmissionTimer" type="Node" parent="Audio" unique_id=817960942]
 script = ExtResource("3_i3pqv")
-PacketsPerSecond = 86.13281
-WaitTime = 0.011609977
-metadata/_custom_type_script = "uid://rd5n63hl04tj"
+PacketsPerSecond = 86.13338616181018
+WaitTime = 0.0116099
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1046335613]
 replication_config = SubResource("SceneReplicationConfig_onrkg")

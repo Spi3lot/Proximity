@@ -6,13 +6,12 @@ namespace Proximity;
 
 public partial class Player : CharacterBody2D
 {
-    private const int SampleTransferUnit = 512;
-
     private AudioEffectCapture _capture;
 
     [Export] public AudioListener2D Listener { get; set; }
     [Export] public AudioStreamPlayer2D Speakers { get; set; }
     [Export] public AudioStreamPlayer Microphone { get; set; }
+    [Export] public RealTimer AudioTransmissionTimer { get; set; }
     [Export] public float Speed { get; set; } = 1000;
 
     public override void _EnterTree()
@@ -31,6 +30,23 @@ public partial class Player : CharacterBody2D
             Speakers.QueueFree();
             Microphone.Play();
             _capture = (AudioEffectCapture) AudioServer.GetBusEffect(AudioServer.GetBusIndex("Capture"), 0);
+
+            float mixRate = AudioServer.GetMixRate();
+            float[] floats = new float[Mathf.CeilToInt(AudioTransmissionTimer.SamplesPerPacket)];
+            AudioTransmissionTimer.SamplesPerSecond = mixRate;
+
+            AudioTransmissionTimer.Timeout += _ =>
+            {
+                int framesToSend = Mathf.Min(_capture.GetFramesAvailable(), floats.Length);
+                var vectors = _capture.GetBuffer(framesToSend);
+
+                for (int i = 0; i < vectors.Length; i++)
+                {
+                    floats[i] = (vectors[i].X + vectors[i].Y) / 2;
+                }
+
+                Rpc(MethodName.OutputVoice, floats[..framesToSend], mixRate);
+            };
         }
         else
         {
@@ -46,21 +62,6 @@ public partial class Player : CharacterBody2D
 
         Velocity = Speed * Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
         MoveAndSlide();
-
-        if (_capture.GetFramesAvailable() < SampleTransferUnit) return;
-        float[] floats = new float[SampleTransferUnit];
-
-        do
-        {
-            var vectors = _capture.GetBuffer(SampleTransferUnit);
-
-            for (int i = 0; i < SampleTransferUnit; i++)
-            {
-                floats[i] = (vectors[i].X + vectors[i].Y) / 2;
-            }
-
-            Rpc(MethodName.OutputVoice, floats, AudioServer.GetMixRate());
-        } while (_capture.GetFramesAvailable() >= SampleTransferUnit);
     }
 
     [Rpc(CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.UnreliableOrdered)]
