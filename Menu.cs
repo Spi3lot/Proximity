@@ -6,10 +6,11 @@ public partial class Menu : Control
 {
     [Export] public LineEdit AddressLineEdit { get; set; }
     [Export] public LineEdit PortLineEdit { get; set; }
+    [Export] public Button UpnpButton { get; set; }
 
     private async void OnHostButtonPressed()
     {
-        if (await NetworkManager.Instance.CreateServer(ushort.Parse(PortLineEdit.Text)))
+        if (await NetworkManager.Instance.CreateServer(ushort.Parse(PortLineEdit.Text), UpnpButton.ButtonPressed))
         {
             ChangeSceneToGame();
         }

@@ -25,7 +25,7 @@ public partial class NetworkManager : Node
         }
     }
 
-    public async Task<bool> CreateServer(ushort port)
+    public async Task<bool> CreateServer(ushort port, bool upnp)
     {
         var peer = new ENetMultiplayerPeer();
         var error = peer.CreateServer(port);
@@ -36,7 +36,7 @@ public partial class NetworkManager : Node
             return false;
         }
 
-        if (!await Task.Run(SetupUpnp) || !AddUpnpPortMapping(port))
+        if (upnp && (!await Task.Run(SetupUpnp) || !AddUpnpPortMapping(port)))
         {
             return false;
         }
