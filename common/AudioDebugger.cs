@@ -1,4 +1,6 @@
-﻿using Godot;
+﻿using System;
+
+using Godot;
 
 namespace Proximity.Common;
 
@@ -116,13 +118,13 @@ public partial class AudioDebugger : CanvasLayer
         };
 
         vbox.AddChild(_statsLabel);
-        _egressGraph = CreateGraph(vbox, _egressHistory, MaxSamplesPerPacket, new Color(0, 0.5f, 1, 0.8f));
-        _ingressGraph = CreateGraph(vbox, _ingressHistory, MaxSamplesPerPacket, new Color(0, 1, 0, 0.8f));
-        _discardedGraph = CreateGraph(vbox, _discardedHistory, MaxSamplesPerPacket, new Color(1, 0, 0, 0.8f));
-        _skipGraph = CreateGraph(vbox, _skipHistory, 10, new Color(1, 1, 1, 0.8f));
+        _egressGraph = CreateGraph(vbox, _egressHistory, () => MaxSamplesPerPacket, new Color(0, 0.5f, 1, 0.8f));
+        _ingressGraph = CreateGraph(vbox, _ingressHistory, () => MaxSamplesPerPacket, new Color(0, 1, 0, 0.8f));
+        _discardedGraph = CreateGraph(vbox, _discardedHistory, () => MaxSamplesPerPacket, new Color(1, 0, 0, 0.8f));
+        _skipGraph = CreateGraph(vbox, _skipHistory, () => 10, new Color(1, 1, 1, 0.8f));
     }
 
-    private ColorRect CreateGraph(Control parent, float[] history, float maxValue, Color color)
+    private ColorRect CreateGraph(Control parent, float[] history, Func<float> maxValueGetter, Color color)
     {
         var graphCanvas = new ColorRect
         {
@@ -134,7 +136,7 @@ public partial class AudioDebugger : CanvasLayer
         {
             var size = graphCanvas.Size;
             float xStep = size.X / MaxHistory;
-            float yScale = size.Y / maxValue;
+            float yScale = size.Y / maxValueGetter();
 
             for (int i = 0; i < MaxHistory - 1; i++)
             {
