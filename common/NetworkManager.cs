@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Godot;
 
-namespace Proximity;
+namespace Proximity.Common;
 
 public partial class NetworkManager : Node
 {

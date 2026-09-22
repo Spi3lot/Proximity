@@ -1,6 +1,8 @@
 using Godot;
 
-namespace Proximity;
+using Proximity.Common;
+
+namespace Proximity.Menu;
 
 public partial class Menu : Control
 {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Godot;
 using Godot.Collections;
 
-namespace Proximity;
+namespace Proximity.Common;
 
 [Tool]
 [Icon("res://addons/at-icons/node/wind.svg")]

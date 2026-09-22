@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Proximity;
+namespace Proximity.Common;
 
 public partial class AudioDebugger : CanvasLayer
 {

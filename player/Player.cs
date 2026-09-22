@@ -2,7 +2,9 @@ using System;
 
 using Godot;
 
-namespace Proximity;
+using Proximity.Common;
+
+namespace Proximity.Player;
 
 public partial class Player : CharacterBody2D
 {
