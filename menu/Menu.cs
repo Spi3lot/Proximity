@@ -6,6 +6,7 @@ namespace Proximity.Menu;
 
 public partial class Menu : Control
 {
+    [Export] public PackedScene GameScene { get; set; }
     [Export] public LineEdit AddressLineEdit { get; set; }
     [Export] public LineEdit PortLineEdit { get; set; }
     [Export] public Button UpnpButton { get; set; }
@@ -28,6 +29,6 @@ public partial class Menu : Control
 
     private void ChangeSceneToGame()
     {
-        GetTree().CallDeferred(SceneTree.MethodName.ChangeSceneToFile, "res://game.tscn");
+        GetTree().CallDeferred(SceneTree.MethodName.ChangeSceneToPacked, GameScene);
     }
 }

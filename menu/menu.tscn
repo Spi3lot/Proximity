@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cp5r02cko44d0"]
 
 [ext_resource type="Script" uid="uid://b6uegtn3wr8o5" path="res://menu/Menu.cs" id="1_lti8b"]
+[ext_resource type="PackedScene" uid="uid://bo8xye03yljxf" path="res://game/game.tscn" id="2_g18jx"]
 
 [node name="Menu" type="Control" unique_id=532150766 node_paths=PackedStringArray("AddressLineEdit", "PortLineEdit", "UpnpButton")]
 layout_mode = 3
@@ -13,6 +14,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_lti8b")
+GameScene = ExtResource("2_g18jx")
 AddressLineEdit = NodePath("BoxContainer/BoxContainer/JoinContainer/AddressLineEdit")
 PortLineEdit = NodePath("BoxContainer/PortLineEdit")
 UpnpButton = NodePath("BoxContainer/BoxContainer/HostContainer/UpnpButton")
