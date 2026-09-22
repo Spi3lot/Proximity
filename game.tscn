@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c1tdr7hntmtmk" path="res://PlayerSpawner.cs" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://smuwsu0bjhd2" path="res://player.tscn" id="2_e2o6t"]
+[ext_resource type="Script" uid="uid://c4cydxjly6bk0" path="res://AudioDebugger.cs" id="3_feb5d"]
 
 [node name="Game" type="Node2D" unique_id=1827757935]
 
@@ -14,3 +15,7 @@ PlayerScene = ExtResource("2_e2o6t")
 [node name="Players" type="Node2D" parent="." unique_id=1448341496]
 position = Vector2(568, 303)
 scale = Vector2(0.965, 0.965)
+
+[node name="AudioDebugger" type="CanvasLayer" parent="." unique_id=1565564131]
+visible = false
+script = ExtResource("3_feb5d")

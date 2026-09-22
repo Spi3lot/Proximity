@@ -33,6 +33,7 @@ public partial class Player : CharacterBody2D
 
             float mixRate = AudioServer.GetMixRate();
             float[] floats = new float[Mathf.CeilToInt(AudioTransmissionTimer.SamplesPerPacket)];
+            AudioDebugger.Instance.MaxSamplesPerPacket = 2 * AudioTransmissionTimer.SamplesPerPacket;
             AudioTransmissionTimer.SamplesPerSecond = mixRate;
 
             AudioTransmissionTimer.Timeout += _ =>
@@ -46,6 +47,7 @@ public partial class Player : CharacterBody2D
                 }
 
                 Rpc(MethodName.OutputVoice, floats[..framesToSend], mixRate);
+                AudioDebugger.Instance.LogEgress(framesToSend);
             };
         }
         else
@@ -68,8 +70,15 @@ public partial class Player : CharacterBody2D
     private void OutputVoice(float[] floats, float mixRate)
     {
         var playback = (AudioStreamGeneratorPlayback) Speakers.GetStreamPlayback();
-        if (playback is null || playback.GetFramesAvailable() < floats.Length) return;
+        AudioDebugger.Instance.PlaybackSkips = playback.GetSkips();
 
+        if (playback.GetFramesAvailable() < floats.Length)
+        {
+            AudioDebugger.Instance.LogDiscarded(floats.Length);
+            return;
+        }
+
+        AudioDebugger.Instance.LogIngress(floats.Length);
         Span<Vector2> vectors = stackalloc Vector2[floats.Length];
 
         for (int i = 0; i < floats.Length; i++)
