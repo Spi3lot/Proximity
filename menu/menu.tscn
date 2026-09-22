@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cp5r02cko44d0"]
 
-[ext_resource type="Script" uid="uid://b6uegtn3wr8o5" path="res://Menu.cs" id="1_lti8b"]
+[ext_resource type="Script" uid="uid://b6uegtn3wr8o5" path="res://menu/Menu.cs" id="1_lti8b"]
 
 [node name="Menu" type="Control" unique_id=532150766 node_paths=PackedStringArray("AddressLineEdit", "PortLineEdit", "UpnpButton")]
 layout_mode = 3

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://smuwsu0bjhd2"]
 
-[ext_resource type="Script" uid="uid://bjxonrk4rnxfe" path="res://Player.cs" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://bjxonrk4rnxfe" path="res://player/Player.cs" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://bf8l6ubf6f7pm" path="res://icon.svg" id="2_onrkg"]
-[ext_resource type="Script" uid="uid://rd5n63hl04tj" path="res://RealTimer.cs" id="3_i3pqv"]
+[ext_resource type="Script" uid="uid://rd5n63hl04tj" path="res://common/RealTimer.cs" id="3_i3pqv"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_25s18"]
 radius = 50.0
