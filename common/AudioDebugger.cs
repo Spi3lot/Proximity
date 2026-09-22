@@ -9,17 +9,17 @@ public partial class AudioDebugger : CanvasLayer
     private readonly float[] _egressHistory = new float[MaxHistory];
     private readonly float[] _ingressHistory = new float[MaxHistory];
     private readonly float[] _discardedHistory = new float[MaxHistory];
+    private readonly float[] _skipHistory = new float[MaxHistory];
 
     private RichTextLabel _statsLabel;
-    private Control _egressGraph, _ingressGraph, _discardedGraph;
-    private int _egressCount, _ingressCount, _discardedCount;
-    private int _lastEgressPps, _lastIngressPps, _lastDiscardedPps;
+    private Control _egressGraph, _ingressGraph, _discardedGraph, _skipGraph;
+    private int _egressCount, _ingressCount, _discardedCount, _skipCount;
+    private int _displayedEgressPps, _displayedIngressPps, _displayedDiscardedPps;
     private int _headIndex;
     private double _ppsTimer;
 
     public static AudioDebugger Instance { get; private set; }
     public int MaxSamplesPerPacket { get; set; }
-    public int PlaybackSkips { get; set; }
 
     public override void _EnterTree()
     {
@@ -43,9 +43,9 @@ public partial class AudioDebugger : CanvasLayer
 
         if (_ppsTimer >= 1.0)
         {
-            _lastEgressPps = _egressCount;
-            _lastIngressPps = _ingressCount;
-            _lastDiscardedPps = _discardedCount;
+            _displayedEgressPps = _egressCount;
+            _displayedIngressPps = _ingressCount;
+            _displayedDiscardedPps = _discardedCount;
             _egressCount = _ingressCount = _discardedCount = 0;
             _ppsTimer -= 1.0;
         }
@@ -54,6 +54,7 @@ public partial class AudioDebugger : CanvasLayer
         _egressGraph.QueueRedraw();
         _ingressGraph.QueueRedraw();
         _discardedGraph.QueueRedraw();
+        _skipGraph.QueueRedraw();
     }
 
     public void LogEgress(int sampleSize)
@@ -75,6 +76,12 @@ public partial class AudioDebugger : CanvasLayer
         _discardedCount++;
     }
 
+    public void LogSkips(int totalSkips)
+    {
+        _skipHistory[_headIndex] = totalSkips - _skipCount;
+        _skipCount = totalSkips;
+    }
+
     private void AdvanceHead()
     {
         _headIndex = (_headIndex + 1) % MaxHistory;
@@ -83,10 +90,10 @@ public partial class AudioDebugger : CanvasLayer
     private void UpdateStatsText()
     {
         _statsLabel.Text = $"""
-                            [color=green][b]Egress:[/b][/color] {_lastEgressPps} packets / s
-                            [color=#0088ff][b]Ingress (Consumed):[/b][/color] {_lastIngressPps} packets / s
-                            [color=red][b]Ingress (Discarded):[/b] {_lastDiscardedPps} packets / s[/color]
-                            [b]Playback Skips:[/b] {PlaybackSkips}
+                            [color=green][b]Egress:[/b][/color] {_displayedEgressPps} packets / s
+                            [color=#0088ff][b]Ingress (Consumed):[/b][/color] {_displayedIngressPps} packets / s
+                            [color=red][b]Ingress (Discarded):[/b] {_displayedDiscardedPps} packets / s[/color]
+                            [b]Playback Skips:[/b] {_skipCount}
                             """;
     }
 
@@ -109,12 +116,13 @@ public partial class AudioDebugger : CanvasLayer
         };
 
         vbox.AddChild(_statsLabel);
-        _egressGraph = CreateGraph(vbox, _egressHistory, new Color(0, 1, 0, 0.8f));
-        _ingressGraph = CreateGraph(vbox, _ingressHistory, new Color(0, 0.5f, 1, 0.8f));
-        _discardedGraph = CreateGraph(vbox, _discardedHistory, new Color(1, 0, 0, 0.9f));
+        _egressGraph = CreateGraph(vbox, _egressHistory, MaxSamplesPerPacket, new Color(0, 0.5f, 1, 0.8f));
+        _ingressGraph = CreateGraph(vbox, _ingressHistory, MaxSamplesPerPacket, new Color(0, 1, 0, 0.8f));
+        _discardedGraph = CreateGraph(vbox, _discardedHistory, MaxSamplesPerPacket, new Color(1, 0, 0, 0.8f));
+        _skipGraph = CreateGraph(vbox, _skipHistory, 10, new Color(1, 1, 1, 0.8f));
     }
 
-    private ColorRect CreateGraph(Control parent, float[] history, Color color)
+    private ColorRect CreateGraph(Control parent, float[] history, float maxValue, Color color)
     {
         var graphCanvas = new ColorRect
         {
@@ -126,7 +134,7 @@ public partial class AudioDebugger : CanvasLayer
         {
             var size = graphCanvas.Size;
             float xStep = size.X / MaxHistory;
-            float yScale = size.Y / MaxSamplesPerPacket;
+            float yScale = size.Y / maxValue;
 
             for (int i = 0; i < MaxHistory - 1; i++)
             {
