@@ -10,13 +10,11 @@ public partial class AudioDebugger : CanvasLayer
     private readonly float[] _ingressHistory = new float[MaxHistory];
     private readonly float[] _discardedHistory = new float[MaxHistory];
 
-    private bool _slidingMode = true;
-    private int _headIndex;
-
     private RichTextLabel _statsLabel;
     private Control _egressGraph, _ingressGraph, _discardedGraph;
     private int _egressCount, _ingressCount, _discardedCount;
     private int _lastEgressPps, _lastIngressPps, _lastDiscardedPps;
+    private int _headIndex;
     private double _ppsTimer;
 
     public static AudioDebugger Instance { get; private set; }
@@ -80,23 +78,15 @@ public partial class AudioDebugger : CanvasLayer
     private void AdvanceHead()
     {
         _headIndex = (_headIndex + 1) % MaxHistory;
-
-        if (!_slidingMode)
-        {
-            int clearIndex = (_headIndex + 5) % MaxHistory;
-            _egressHistory[clearIndex] = 0;
-            _ingressHistory[clearIndex] = 0;
-            _discardedHistory[clearIndex] = 0;
-        }
     }
 
     private void UpdateStatsText()
     {
         _statsLabel.Text =
-            $"[color=green][b]Egress:[/b][/color] {_lastEgressPps} packets/sec\n" +
-            $"[color=#0088ff][b]Ingress (Success):[/b][/color] {_lastIngressPps} packets/sec\n" +
-            $"[color=red][b]Ingress (Discarded):[/b] {_lastDiscardedPps} packets/sec[/color]\n" +
-            $"[b]Native Ring Buffer Skips:[/b] {PlaybackSkips}";
+            $"[color=green][b]Egress:[/b][/color] {_lastEgressPps} packets / s\n" +
+            $"[color=#0088ff][b]Ingress (Success):[/b][/color] {_lastIngressPps} packets / s\n" +
+            $"[color=red][b]Ingress (Discarded):[/b] {_lastDiscardedPps} packets / s[/color]\n" +
+            $"[b]Playback Skips:[/b] {PlaybackSkips}";
     }
 
     private void BuildUi()
@@ -109,19 +99,6 @@ public partial class AudioDebugger : CanvasLayer
 
         var vbox = new VBoxContainer();
         panel.AddChild(vbox);
-
-        var headerBox = new HBoxContainer();
-        vbox.AddChild(headerBox);
-
-        headerBox.AddChild(new Label { Text = "VoIP Diagnostics", SizeFlagsHorizontal = Control.SizeFlags.ExpandFill });
-
-        var toggleBtn = new Button { Text = "Mode: Sliding" };
-        toggleBtn.Pressed += () =>
-        {
-            _slidingMode = !_slidingMode;
-            toggleBtn.Text = _slidingMode ? "Mode: Sliding" : "Mode: Overwriting";
-        };
-        headerBox.AddChild(toggleBtn);
 
         _statsLabel = new RichTextLabel { BbcodeEnabled = true, CustomMinimumSize = new Vector2(0, 90), ScrollActive = false };
         vbox.AddChild(_statsLabel);
@@ -143,10 +120,10 @@ public partial class AudioDebugger : CanvasLayer
 
             for (int i = 0; i < MaxHistory - 1; i++)
             {
-                int indexA = _slidingMode ? (_headIndex + i) % MaxHistory : i;
-                int indexB = _slidingMode ? (_headIndex + i + 1) % MaxHistory : i + 1;
+                int indexA = (_headIndex + i) % MaxHistory;
+                int indexB = (_headIndex + i + 1) % MaxHistory;
 
-                if (!_slidingMode && (indexA == _headIndex || indexB == _headIndex)) continue;
+                if (indexA == _headIndex || indexB == _headIndex) continue;
 
                 if (history[indexA] > 0 || history[indexB] > 0)
                 {
