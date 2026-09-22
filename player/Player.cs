@@ -14,7 +14,7 @@ public partial class Player : CharacterBody2D
     [Export] public AudioListener2D Listener { get; set; }
     [Export] public AudioStreamPlayer2D Speakers { get; set; }
     [Export] public AudioStreamPlayer Microphone { get; set; }
-    [Export] public int SamplesPerPacket { get; set; } = 512;
+    [Export] public int MaxSamplesPerPacket { get; set; } = 128;
     [Export] public float Speed { get; set; } = 1000;
 
     public override void _EnterTree()
@@ -30,8 +30,8 @@ public partial class Player : CharacterBody2D
             Speakers.QueueFree();
             Microphone.Play();
             _capture = (AudioEffectCapture) AudioServer.GetBusEffect(AudioServer.GetBusIndex("Capture"), 0);
-            _capturedSamples = new float[SamplesPerPacket];
-            AudioDebugger.Instance.MaxSamplesPerPacket = 2 * SamplesPerPacket;
+            _capturedSamples = new float[MaxSamplesPerPacket];
+            AudioDebugger.Instance.MaxSamplesPerPacket = MaxSamplesPerPacket;
         }
         else
         {
@@ -50,7 +50,7 @@ public partial class Player : CharacterBody2D
 
         while (_capture.GetFramesAvailable() > 0)
         {
-            int framesToSend = Mathf.Min(_capture.GetFramesAvailable(), SamplesPerPacket);
+            int framesToSend = Mathf.Min(_capture.GetFramesAvailable(), MaxSamplesPerPacket);
             var vectors = _capture.GetBuffer(framesToSend);
 
             for (int i = 0; i < vectors.Length; i++)

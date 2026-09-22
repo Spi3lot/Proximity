@@ -28,7 +28,7 @@ script = ExtResource("1_4flbx")
 Listener = NodePath("Audio/AudioListener2D")
 Speakers = NodePath("Audio/Speakers")
 Microphone = NodePath("Audio/Microphone")
-SamplesPerPacket = 256
+MaxSamplesPerPacket = 16
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=2134534478]
 rotation = -3.1415925
