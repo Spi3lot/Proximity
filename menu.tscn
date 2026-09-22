@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b6uegtn3wr8o5" path="res://Menu.cs" id="1_lti8b"]
 
-[node name="Menu" type="Control" unique_id=532150766 node_paths=PackedStringArray("AddressLineEdit", "PortLineEdit")]
+[node name="Menu" type="Control" unique_id=532150766 node_paths=PackedStringArray("AddressLineEdit", "PortLineEdit", "UpnpButton")]
 layout_mode = 3
 anchor_left = 0.1579861
 anchor_top = 0.5
@@ -15,6 +15,7 @@ size_flags_vertical = 3
 script = ExtResource("1_lti8b")
 AddressLineEdit = NodePath("BoxContainer/BoxContainer/JoinContainer/AddressLineEdit")
 PortLineEdit = NodePath("BoxContainer/PortLineEdit")
+UpnpButton = NodePath("BoxContainer/BoxContainer/HostContainer/UpnpButton")
 metadata/_edit_use_anchors_ = true
 
 [node name="BoxContainer" type="BoxContainer" parent="." unique_id=756401695]
@@ -44,7 +45,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Host"
 
-[node name="Button" type="Button" parent="BoxContainer/BoxContainer/HostContainer" unique_id=1578454187]
+[node name="UpnpButton" type="Button" parent="BoxContainer/BoxContainer/HostContainer" unique_id=1578454187]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0, 0, 1)
