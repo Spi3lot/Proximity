@@ -82,11 +82,12 @@ public partial class AudioDebugger : CanvasLayer
 
     private void UpdateStatsText()
     {
-        _statsLabel.Text =
-            $"[color=green][b]Egress:[/b][/color] {_lastEgressPps} packets / s\n" +
-            $"[color=#0088ff][b]Ingress (Success):[/b][/color] {_lastIngressPps} packets / s\n" +
-            $"[color=red][b]Ingress (Discarded):[/b] {_lastDiscardedPps} packets / s[/color]\n" +
-            $"[b]Playback Skips:[/b] {PlaybackSkips}";
+        _statsLabel.Text = $"""
+                            [color=green][b]Egress:[/b][/color] {_lastEgressPps} packets / s
+                            [color=#0088ff][b]Ingress (Consumed):[/b][/color] {_lastIngressPps} packets / s
+                            [color=red][b]Ingress (Discarded):[/b] {_lastDiscardedPps} packets / s[/color]
+                            [b]Playback Skips:[/b] {PlaybackSkips}
+                            """;
     }
 
     private void BuildUi()
@@ -100,9 +101,14 @@ public partial class AudioDebugger : CanvasLayer
         var vbox = new VBoxContainer();
         panel.AddChild(vbox);
 
-        _statsLabel = new RichTextLabel { BbcodeEnabled = true, CustomMinimumSize = new Vector2(0, 90), ScrollActive = false };
-        vbox.AddChild(_statsLabel);
+        _statsLabel = new RichTextLabel
+        {
+            BbcodeEnabled = true,
+            CustomMinimumSize = new Vector2(0, 90),
+            ScrollActive = false,
+        };
 
+        vbox.AddChild(_statsLabel);
         _egressGraph = CreateGraph(vbox, _egressHistory, new Color(0, 1, 0, 0.8f));
         _ingressGraph = CreateGraph(vbox, _ingressHistory, new Color(0, 0.5f, 1, 0.8f));
         _discardedGraph = CreateGraph(vbox, _discardedHistory, new Color(1, 0, 0, 0.9f));
@@ -110,7 +116,11 @@ public partial class AudioDebugger : CanvasLayer
 
     private ColorRect CreateGraph(Control parent, float[] history, Color color)
     {
-        var graphCanvas = new ColorRect { Color = new Color(0, 0, 0, 0.3f), SizeFlagsVertical = Control.SizeFlags.ExpandFill };
+        var graphCanvas = new ColorRect
+        {
+            Color = new Color(0, 0, 0, 0.3f),
+            SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+        };
 
         graphCanvas.Draw += () =>
         {
@@ -127,8 +137,8 @@ public partial class AudioDebugger : CanvasLayer
 
                 if (history[indexA] > 0 || history[indexB] > 0)
                 {
-                    float x1 = i * xStep;
-                    float x2 = (i + 1) * xStep;
+                    float x1 = xStep * i;
+                    float x2 = xStep * (i + 1);
 
                     graphCanvas.DrawLine(
                         new Vector2(x1, size.Y - history[indexA] * yScale),
