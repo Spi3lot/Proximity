@@ -2,7 +2,6 @@
 
 [sub_resource type="AudioEffectCapture" id="AudioEffectCapture_j3pel"]
 resource_name = "Capture"
-buffer_length = 0.5
 
 [resource]
 bus/1/name = &"Voice"
