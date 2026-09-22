@@ -9,11 +9,12 @@ namespace Proximity.Player;
 public partial class Player : CharacterBody2D
 {
     private AudioEffectCapture _capture;
+    private float[] _capturedSamples;
 
     [Export] public AudioListener2D Listener { get; set; }
     [Export] public AudioStreamPlayer2D Speakers { get; set; }
     [Export] public AudioStreamPlayer Microphone { get; set; }
-    [Export] public RealTimer AudioTransmissionTimer { get; set; }
+    [Export] public int SamplesPerPacket { get; set; } = 512;
     [Export] public float Speed { get; set; } = 1000;
 
     public override void _EnterTree()
@@ -23,34 +24,14 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
-        var generator = (AudioStreamGenerator) Speakers.Stream;
-        generator.MixRate = AudioServer.GetMixRate();
-
         if (IsMultiplayerAuthority())
         {
             Listener.MakeCurrent();
             Speakers.QueueFree();
             Microphone.Play();
             _capture = (AudioEffectCapture) AudioServer.GetBusEffect(AudioServer.GetBusIndex("Capture"), 0);
-
-            float mixRate = AudioServer.GetMixRate();
-            float[] floats = new float[Mathf.CeilToInt(AudioTransmissionTimer.SamplesPerPacket)];
-            AudioDebugger.Instance.MaxSamplesPerPacket = 2 * AudioTransmissionTimer.SamplesPerPacket;
-            AudioTransmissionTimer.SamplesPerSecond = mixRate;
-
-            AudioTransmissionTimer.Timeout += _ =>
-            {
-                int framesToSend = Mathf.Min(_capture.GetFramesAvailable(), floats.Length);
-                var vectors = _capture.GetBuffer(framesToSend);
-
-                for (int i = 0; i < vectors.Length; i++)
-                {
-                    floats[i] = (vectors[i].X + vectors[i].Y) / 2;
-                }
-
-                Rpc(MethodName.OutputVoice, floats[..framesToSend], mixRate);
-                AudioDebugger.Instance.LogEgress(framesToSend);
-            };
+            _capturedSamples = new float[SamplesPerPacket];
+            AudioDebugger.Instance.MaxSamplesPerPacket = 2 * SamplesPerPacket;
         }
         else
         {
@@ -66,13 +47,27 @@ public partial class Player : CharacterBody2D
 
         Velocity = Speed * Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
         MoveAndSlide();
+
+        while (_capture.GetFramesAvailable() > 0)
+        {
+            int framesToSend = Mathf.Min(_capture.GetFramesAvailable(), SamplesPerPacket);
+            var vectors = _capture.GetBuffer(framesToSend);
+
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                _capturedSamples[i] = (vectors[i].X + vectors[i].Y) / 2;
+            }
+
+            Rpc(MethodName.OutputVoice, _capturedSamples[..framesToSend], AudioServer.GetMixRate());
+            AudioDebugger.Instance.LogEgress(framesToSend);
+        }
     }
 
     [Rpc(CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.UnreliableOrdered)]
     private void OutputVoice(float[] floats, float mixRate)
     {
         var playback = (AudioStreamGeneratorPlayback) Speakers.GetStreamPlayback();
-        AudioDebugger.Instance.PlaybackSkips = playback.GetSkips();
+        AudioDebugger.Instance.LogSkips(playback.GetSkips());
 
         if (playback.GetFramesAvailable() < floats.Length)
         {
