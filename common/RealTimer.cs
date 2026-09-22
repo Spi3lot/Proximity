@@ -7,6 +7,7 @@ using Godot.Collections;
 namespace Proximity.Common;
 
 [Tool]
+[GlobalClass]
 [Icon("res://addons/at-icons/node/wind.svg")]
 public partial class RealTimer : Node
 {
