@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Godot;
 
 namespace Proximity.Common;
 
 public partial class NetworkManager : Node
 {
-    private Upnp _upnp;
-
     private readonly List<int> _upnpPortMappings = [];
 
+    private Upnp _upnp;
+
     public static NetworkManager Instance { get; private set; }
+
+    public ENetMultiplayerPeer Peer { get; private set; }
 
     public NetworkManager() => Instance = this;
 
@@ -27,8 +28,8 @@ public partial class NetworkManager : Node
 
     public async Task<bool> CreateServer(ushort port, bool upnp)
     {
-        var peer = new ENetMultiplayerPeer();
-        var error = peer.CreateServer(port);
+        Peer = new ENetMultiplayerPeer();
+        var error = Peer.CreateServer(port);
 
         if (error != Error.Ok)
         {
@@ -41,14 +42,14 @@ public partial class NetworkManager : Node
             return false;
         }
 
-        Multiplayer.MultiplayerPeer = peer;
+        Multiplayer.MultiplayerPeer = Peer;
         return true;
     }
 
     public bool CreateClient(string address, ushort port)
     {
-        var peer = new ENetMultiplayerPeer();
-        var error = peer.CreateClient(address, port);
+        Peer = new ENetMultiplayerPeer();
+        var error = Peer.CreateClient(address, port);
 
         if (error != Error.Ok)
         {
@@ -56,7 +57,7 @@ public partial class NetworkManager : Node
             return false;
         }
 
-        Multiplayer.MultiplayerPeer = peer;
+        Multiplayer.MultiplayerPeer = Peer;
         return true;
     }
 
