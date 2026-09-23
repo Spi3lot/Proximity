@@ -50,41 +50,41 @@ public partial class Player : CharacterBody2D
 
         while (_capture.GetFramesAvailable() > 0)
         {
-            int framesToSend = Mathf.Min(_capture.GetFramesAvailable(), MaxSamplesPerPacket);
-            var vectors = _capture.GetBuffer(framesToSend);
+            int samplesToSend = Mathf.Min(_capture.GetFramesAvailable(), MaxSamplesPerPacket);
+            var capturedFrames = _capture.GetBuffer(samplesToSend);
 
-            for (int i = 0; i < vectors.Length; i++)
+            for (int i = 0; i < samplesToSend; i++)
             {
-                _capturedSamples[i] = (vectors[i].X + vectors[i].Y) / 2;
+                _capturedSamples[i] = (capturedFrames[i].X + capturedFrames[i].Y) / 2;
             }
 
-            Rpc(MethodName.OutputVoice, _capturedSamples[..framesToSend], AudioServer.GetMixRate());
-            AudioDebugger.Instance.LogEgress(framesToSend);
+            Rpc(MethodName.OutputVoice, _capturedSamples[..samplesToSend], AudioServer.GetMixRate());
+            AudioDebugger.Instance.LogEgress(samplesToSend);
         }
     }
 
     [Rpc(CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.UnreliableOrdered)]
-    private void OutputVoice(float[] floats, float mixRate)
+    private void OutputVoice(float[] samples, float mixRate)
     {
         var playback = (AudioStreamGeneratorPlayback) Speakers.GetStreamPlayback();
         AudioDebugger.Instance.LogSkips(playback.GetSkips());
 
-        if (playback.GetFramesAvailable() < floats.Length)
+        if (playback.GetFramesAvailable() < samples.Length)
         {
-            AudioDebugger.Instance.LogDiscarded(floats.Length);
+            AudioDebugger.Instance.LogDiscarded(samples.Length);
             return;
         }
 
-        AudioDebugger.Instance.LogIngress(floats.Length);
-        Span<Vector2> vectors = stackalloc Vector2[floats.Length];
+        AudioDebugger.Instance.LogIngress(samples.Length);
+        Span<Vector2> frames = stackalloc Vector2[samples.Length];
 
-        for (int i = 0; i < floats.Length; i++)
+        for (int i = 0; i < samples.Length; i++)
         {
-            vectors[i] = new Vector2(floats[i], floats[i]);
+            frames[i] = new Vector2(samples[i], samples[i]);
         }
 
         var generator = (AudioStreamGenerator) Speakers.Stream;
         generator.MixRate = mixRate;
-        playback.PushBuffer(vectors);
+        playback.PushBuffer(frames);
     }
 }
