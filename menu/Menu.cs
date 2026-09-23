@@ -1,15 +1,19 @@
 using Godot;
 
-namespace Proximity;
+using Proximity.Common;
+
+namespace Proximity.Menu;
 
 public partial class Menu : Control
 {
+    [Export] public PackedScene GameScene { get; set; }
     [Export] public LineEdit AddressLineEdit { get; set; }
     [Export] public LineEdit PortLineEdit { get; set; }
+    [Export] public Button UpnpButton { get; set; }
 
     private async void OnHostButtonPressed()
     {
-        if (await NetworkManager.Instance.CreateServer(ushort.Parse(PortLineEdit.Text)))
+        if (await NetworkManager.Instance.CreateServer(ushort.Parse(PortLineEdit.Text), UpnpButton.ButtonPressed))
         {
             ChangeSceneToGame();
         }
@@ -25,6 +29,6 @@ public partial class Menu : Control
 
     private void ChangeSceneToGame()
     {
-        GetTree().CallDeferred(SceneTree.MethodName.ChangeSceneToFile, "res://game.tscn");
+        GetTree().CallDeferred(SceneTree.MethodName.ChangeSceneToPacked, GameScene);
     }
 }

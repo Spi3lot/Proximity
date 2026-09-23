@@ -1,7 +1,12 @@
-*.user
+*.html
 /export/
+
+# JetBrains specific ignores
+*.user
 /.idea/
 
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+/addons/

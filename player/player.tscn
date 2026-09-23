@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://smuwsu0bjhd2"]
 
-[ext_resource type="Script" uid="uid://bjxonrk4rnxfe" path="res://Player.cs" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://bjxonrk4rnxfe" path="res://player/Player.cs" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://bf8l6ubf6f7pm" path="res://icon.svg" id="2_onrkg"]
+[ext_resource type="Script" uid="uid://rd5n63hl04tj" path="res://common/RealTimer.cs" id="3_i3pqv"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_25s18"]
 radius = 50.0
@@ -27,6 +28,7 @@ script = ExtResource("1_4flbx")
 Listener = NodePath("Audio/AudioListener2D")
 Speakers = NodePath("Audio/Speakers")
 Microphone = NodePath("Audio/Microphone")
+MaxSamplesPerPacket = 16
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=2134534478]
 rotation = -3.1415925
@@ -51,6 +53,14 @@ bus = &"Voice"
 stream = SubResource("AudioStreamMicrophone_xspuc")
 volume_db = 24.0
 bus = &"Capture"
+
+[node name="AudioTransmissionTimer" type="Node" parent="Audio" unique_id=817960942]
+process_mode = 4
+script = ExtResource("3_i3pqv")
+SamplesPerPacket = 128
+SamplesPerSecond = 48000.0
+PacketsPerSecond = 375.00937523438085
+WaitTime = 0.0026666
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1046335613]
 replication_config = SubResource("SceneReplicationConfig_onrkg")

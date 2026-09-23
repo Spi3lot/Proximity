@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Proximity;
+namespace Proximity.Player;
 
 public partial class PlayerSpawner : MultiplayerSpawner
 {
