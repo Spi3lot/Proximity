@@ -39,8 +39,7 @@ public partial class AudioDebugger : CanvasLayer
 
     public override void _Process(double delta)
     {
-        if (!Visible) return;
-
+        AdvanceHead();
         _ppsTimer += delta;
 
         if (_ppsTimer >= 1.0)
@@ -52,41 +51,48 @@ public partial class AudioDebugger : CanvasLayer
             _ppsTimer -= 1.0;
         }
 
-        UpdateStatsText();
-        _egressGraph.QueueRedraw();
-        _ingressGraph.QueueRedraw();
-        _discardedGraph.QueueRedraw();
-        _skipGraph.QueueRedraw();
+        if (Visible)
+        {
+            UpdateStatsText();
+            _egressGraph.QueueRedraw();
+            _ingressGraph.QueueRedraw();
+            _discardedGraph.QueueRedraw();
+            _skipGraph.QueueRedraw();
+        }
     }
 
     public void LogEgress(int sampleSize)
     {
-        _egressHistory[_headIndex] = sampleSize;
+        _egressHistory[_headIndex] += sampleSize;
         _egressCount++;
-        AdvanceHead();
     }
 
     public void LogIngress(int sampleSize)
     {
-        _ingressHistory[_headIndex] = sampleSize;
+        _ingressHistory[_headIndex] += sampleSize;
         _ingressCount++;
     }
 
     public void LogDiscarded(int sampleSize)
     {
-        _discardedHistory[_headIndex] = sampleSize;
+        _discardedHistory[_headIndex] += sampleSize;
         _discardedCount++;
     }
 
     public void LogSkips(int totalSkips)
     {
-        _skipHistory[_headIndex] = totalSkips - _skipCount;
+        _skipHistory[_headIndex] += totalSkips - _skipCount;
         _skipCount = totalSkips;
     }
 
     private void AdvanceHead()
     {
         _headIndex = (_headIndex + 1) % MaxHistory;
+
+        _egressHistory[_headIndex] = 0;
+        _ingressHistory[_headIndex] = 0;
+        _discardedHistory[_headIndex] = 0;
+        _skipHistory[_headIndex] = 0;
     }
 
     private void UpdateStatsText()
@@ -118,10 +124,17 @@ public partial class AudioDebugger : CanvasLayer
         };
 
         vbox.AddChild(_statsLabel);
-        _egressGraph = CreateGraph(vbox, _egressHistory, () => MaxSamplesPerPacket, new Color(0, 0.5f, 1, 0.8f));
-        _ingressGraph = CreateGraph(vbox, _ingressHistory, () => MaxSamplesPerPacket, new Color(0, 1, 0, 0.8f));
-        _discardedGraph = CreateGraph(vbox, _discardedHistory, () => MaxSamplesPerPacket, new Color(1, 0, 0, 0.8f));
+
+        _egressGraph = CreateGraph(vbox, _egressHistory, EstimateMaxSamplesPerFrame , new Color(0, 0.5f, 1, 0.8f));
+        _ingressGraph = CreateGraph(vbox, _ingressHistory, EstimateMaxSamplesPerFrame, new Color(0, 1, 0, 0.8f));
+        _discardedGraph = CreateGraph(vbox, _discardedHistory, EstimateMaxSamplesPerFrame, new Color(1, 0, 0, 0.8f));
         _skipGraph = CreateGraph(vbox, _skipHistory, () => 10, new Color(1, 1, 1, 0.8f));
+    }
+
+    // (samp/s) / (frm/s) = samp / frm
+    private static float EstimateMaxSamplesPerFrame()
+    {
+        return 20 * AudioServer.GetInputMixRate() / (float) Engine.GetFramesPerSecond();
     }
 
     private ColorRect CreateGraph(Control parent, float[] history, Func<float> maxValueGetter, Color color)
