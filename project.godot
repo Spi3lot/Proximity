@@ -38,6 +38,7 @@ project/assembly_name="Proximity"
 [physics]
 
 3d/physics_engine="Jolt Physics"
+common/physics_interpolation=true
 
 [rendering]
 
