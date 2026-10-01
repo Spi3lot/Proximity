@@ -11,7 +11,7 @@ public partial class Player : RigidBody3D
     private AudioEffectCapture _capture;
     private float[] _capturedSamples;
 
-    [Export] public Camera3D Camera { get; set; }
+    [Export] public CameraPivot Pivot { get; set; }
     [Export] public AudioStreamPlayer3D Speakers { get; set; }
     [Export] public AudioStreamPlayer Microphone { get; set; }
     [Export] public int MaxSamplesPerPacket { get; set; } = 128;
@@ -26,7 +26,6 @@ public partial class Player : RigidBody3D
     {
         if (IsMultiplayerAuthority())
         {
-            Camera.MakeCurrent();
             Speakers.QueueFree();
             Microphone.Play();
             _capture = (AudioEffectCapture) AudioServer.GetBusEffect(AudioServer.GetBusIndex("Capture"), 0);
@@ -35,7 +34,6 @@ public partial class Player : RigidBody3D
         }
         else
         {
-            Camera.QueueFree();
             Speakers.Play();
             Microphone.QueueFree();
             Freeze = true;
