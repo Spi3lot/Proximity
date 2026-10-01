@@ -70,10 +70,14 @@ public partial class Player : RigidBody3D
     {
         if (!IsMultiplayerAuthority()) return;
 
-        var localXzDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-        var globalXzDirection = Camera.Basis * new Vector3(localXzDirection.X, 0, localXzDirection.Y);
-        var torqueAxis = Vector3.Up.Cross(globalXzDirection);
-        ApplyTorque(Speed * (float) delta * torqueAxis);
+        var localXzDirection = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
+        if (localXzDirection.IsZeroApprox()) return;
+
+        float inputStrength = localXzDirection.Length();
+        var globalXyzDirection = Pivot.Basis * new Vector3(localXzDirection.X, 0, localXzDirection.Y);
+        var globalXzDirection = new Vector3(globalXyzDirection.X, 0, globalXyzDirection.Z);
+        var torqueAxis = Vector3.Up.Cross(globalXzDirection.Normalized());
+        ApplyTorque(CurrentlyDesiredSpeed() * (float) delta * inputStrength * torqueAxis);
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)
