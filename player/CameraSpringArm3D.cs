@@ -10,7 +10,6 @@ public partial class CameraSpringArm3D : SpringArm3D
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
-		if (!IsMultiplayerAuthority()) return;
 		if (@event is not InputEventMouseButton mouseButtonEvent) return;
 
 		if (mouseButtonEvent.ButtonIndex == MouseButton.WheelUp)

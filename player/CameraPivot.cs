@@ -26,7 +26,6 @@ public partial class CameraPivot : Node3D
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (!IsMultiplayerAuthority()) return;
         if (@event is not InputEventMouseMotion mouseMotionEvent) return;
 
         Rotation = new Vector3(
