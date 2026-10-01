@@ -2,7 +2,7 @@ using Godot;
 
 namespace Proximity.Player;
 
-public partial class CameraSpringArm3D : SpringArm3D
+public partial class CameraSpringArm : SpringArm3D
 {
 	[Export] public Camera3D Camera { get; set; }
 	[Export] public float MinSpringLength { get; set; }

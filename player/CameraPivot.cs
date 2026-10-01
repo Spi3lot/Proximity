@@ -4,7 +4,7 @@ namespace Proximity.Player;
 
 public partial class CameraPivot : Node3D
 {
-    [Export] public CameraSpringArm3D SpringArm { get; set; }
+    [Export] public CameraSpringArm SpringArm { get; set; }
     [Export] public float PitchSensitivity { get; set; }
     [Export] public float YawSensitivity { get; set; }
 
