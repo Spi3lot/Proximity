@@ -35,6 +35,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 1
 
 [node name="Player" type="RigidBody3D" unique_id=29676302 node_paths=PackedStringArray("Pivot", "FloorRayCast", "Speakers", "Microphone")]
+mass = 1.25
 script = ExtResource("1_4flbx")
 Pivot = NodePath("PositionOnly/CameraPivot")
 FloorRayCast = NodePath("PositionOnly/FloorRayCast")
