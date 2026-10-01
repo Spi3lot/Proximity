@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bf8l6ubf6f7pm" path="res://icon.svg" id="2_onrkg"]
 [ext_resource type="Script" uid="uid://rd5n63hl04tj" path="res://common/RealTimer.cs" id="3_i3pqv"]
 [ext_resource type="Script" uid="uid://cqso6al7fuqo3" path="res://player/CameraPivot.cs" id="3_qjkh3"]
-[ext_resource type="Script" uid="uid://ch4qeofe4txt8" path="res://player/CameraSpringArm3D.cs" id="3_yw30f"]
+[ext_resource type="Script" uid="uid://ch4qeofe4txt8" path="res://player/CameraSpringArm.cs" id="3_yw30f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yw30f"]
 metallic = 1.0
@@ -34,9 +34,10 @@ properties/2/path = NodePath(".:linear_velocity")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 
-[node name="Player" type="RigidBody3D" unique_id=29676302 node_paths=PackedStringArray("Pivot", "Speakers", "Microphone")]
+[node name="Player" type="RigidBody3D" unique_id=29676302 node_paths=PackedStringArray("Pivot", "FloorRayCast", "Speakers", "Microphone")]
 script = ExtResource("1_4flbx")
-Pivot = NodePath("CameraPivot")
+Pivot = NodePath("PositionOnly/CameraPivot")
+FloorRayCast = NodePath("PositionOnly/FloorRayCast")
 Speakers = NodePath("Audio/Speakers")
 Microphone = NodePath("Audio/Microphone")
 
@@ -48,26 +49,30 @@ shape = SubResource("SphereShape3D_82v0y")
 metadata/_edit_lock_ = true
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="." unique_id=986753637]
-remote_path = NodePath("../CameraPivot")
+remote_path = NodePath("../PositionOnly")
 update_rotation = false
 update_scale = false
 
-[node name="CameraPivot" type="Node3D" parent="." unique_id=1619103714 node_paths=PackedStringArray("SpringArm")]
-transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
+[node name="PositionOnly" type="Node3D" parent="." unique_id=1801083612]
 top_level = true
+
+[node name="FloorRayCast" type="RayCast3D" parent="PositionOnly" unique_id=2051953368]
+
+[node name="CameraPivot" type="Node3D" parent="PositionOnly" unique_id=1619103714 node_paths=PackedStringArray("SpringArm")]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
 script = ExtResource("3_qjkh3")
-SpringArm = NodePath("SpringArm3D")
+SpringArm = NodePath("CameraSpringArm")
 PitchSensitivity = 0.01
 YawSensitivity = 0.01
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=683256594 node_paths=PackedStringArray("Camera")]
+[node name="CameraSpringArm" type="SpringArm3D" parent="PositionOnly/CameraPivot" unique_id=683256594 node_paths=PackedStringArray("Camera")]
 spring_length = 2.0
 script = ExtResource("3_yw30f")
 Camera = NodePath("Camera3D")
 MinSpringLength = 1.0
 MaxSpringLength = 10.0
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1424461159]
+[node name="Camera3D" type="Camera3D" parent="PositionOnly/CameraPivot/CameraSpringArm" unique_id=1424461159]
 
 [node name="Audio" type="Node3D" parent="." unique_id=1076361426]
 metadata/_edit_lock_ = true

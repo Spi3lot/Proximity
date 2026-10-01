@@ -12,10 +12,15 @@ public partial class Player : RigidBody3D
     private float[] _capturedSamples;
 
     [Export] public CameraPivot Pivot { get; set; }
+    [Export] public RayCast3D FloorRayCast { get; set; }
     [Export] public AudioStreamPlayer3D Speakers { get; set; }
     [Export] public AudioStreamPlayer Microphone { get; set; }
     [Export] public int MaxSamplesPerPacket { get; set; } = 128;
-    [Export] public float Speed { get; set; } = 1000;
+    [Export(hintString: "suffix:Ns")] public float JumpImpulse { get; set; } = 10;
+    [Export(hintString: "suffix:Nm")] public float Speed { get; set; } = 1000;
+    [Export(hintString: "suffix:Nm")] public float SprintSpeed { get; set; } = 10000;
+
+    public float CurrentlyDesiredSpeed() => Mathf.Lerp(Speed, SprintSpeed, Input.GetActionStrength("sprint"));
 
     public override void _EnterTree()
     {
@@ -36,6 +41,7 @@ public partial class Player : RigidBody3D
         {
             Speakers.Play();
             Microphone.QueueFree();
+            FloorRayCast.QueueFree();
             Freeze = true;
             GetNode<CollisionShape3D>("CollisionShape3D").Disabled = true;
         }
@@ -68,6 +74,17 @@ public partial class Player : RigidBody3D
         var globalXzDirection = Camera.Basis * new Vector3(localXzDirection.X, 0, localXzDirection.Y);
         var torqueAxis = Vector3.Up.Cross(globalXzDirection);
         ApplyTorque(Speed * (float) delta * torqueAxis);
+    }
+
+    public override void _UnhandledKeyInput(InputEvent @event)
+    {
+        if (!IsMultiplayerAuthority()) return;
+
+        if (@event.IsActionPressed("jump") && FloorRayCast.IsColliding())
+        {
+            ApplyCentralImpulse(new Vector3(0, JumpImpulse, 0));
+            GetViewport().SetInputAsHandled();
+        }
     }
 
     [Rpc(CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.UnreliableOrdered)]
