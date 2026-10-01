@@ -17,10 +17,10 @@ public partial class Player : RigidBody3D
     [Export] public AudioStreamPlayer Microphone { get; set; }
     [Export] public int MaxSamplesPerPacket { get; set; } = 128;
     [Export(hintString: "suffix:Ns")] public float JumpImpulse { get; set; } = 10;
-    [Export(hintString: "suffix:Nm")] public float Speed { get; set; } = 1000;
-    [Export(hintString: "suffix:Nm")] public float SprintSpeed { get; set; } = 10000;
+    [Export(hintString: "suffix:Nm")] public float WalkTorque { get; set; } = 500;
+    [Export(hintString: "suffix:Nm")] public float SprintTorque { get; set; } = 1000;
 
-    public float CurrentlyDesiredSpeed() => Mathf.Lerp(Speed, SprintSpeed, Input.GetActionStrength("sprint"));
+    public float CurrentlyDesiredSpeed() => Mathf.Lerp(WalkTorque, SprintTorque, Input.GetActionStrength("sprint"));
 
     public override void _EnterTree()
     {
