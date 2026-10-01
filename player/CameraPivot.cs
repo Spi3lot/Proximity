@@ -32,6 +32,8 @@ public partial class CameraPivot : Node3D
             Mathf.Clamp(Rotation.X - mouseMotionEvent.Relative.Y * YawSensitivity, -1.57f, 1.57f),
             Rotation.Y - mouseMotionEvent.Relative.X * PitchSensitivity,
             Rotation.Z);
+
+        GetViewport().SetInputAsHandled();
     }
 
     public override void _Notification(int what)

@@ -12,13 +12,16 @@ public partial class CameraSpringArm3D : SpringArm3D
 	{
 		if (@event is not InputEventMouseButton mouseButtonEvent) return;
 
-		if (mouseButtonEvent.ButtonIndex == MouseButton.WheelUp)
+		switch (mouseButtonEvent.ButtonIndex)
 		{
-			SpringLength = Mathf.Max(MinSpringLength, SpringLength - mouseButtonEvent.Factor);
-		}
-		else if (mouseButtonEvent.ButtonIndex == MouseButton.WheelDown)
-		{
-			SpringLength = Mathf.Min(MaxSpringLength, SpringLength + mouseButtonEvent.Factor);
+			case MouseButton.WheelUp:
+				SpringLength = Mathf.Max(MinSpringLength, SpringLength - mouseButtonEvent.Factor);
+				GetViewport().SetInputAsHandled();
+				break;
+			case MouseButton.WheelDown:
+				SpringLength = Mathf.Min(MaxSpringLength, SpringLength + mouseButtonEvent.Factor);
+				GetViewport().SetInputAsHandled();
+				break;
 		}
 	}
 }
