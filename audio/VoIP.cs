@@ -11,6 +11,7 @@ public partial class Voip : Node3D
     private AudioEffectCapture _capture;
     private float[] _capturedSamples;
 
+    [Export] public AudioListener3D Listener { get; set; }
     [Export] public AudioStreamPlayer3D Speakers { get; set; }
     [Export] public AudioStreamPlayer Microphone { get; set; }
     [Export] public int MaxSamplesPerPacket { get; set; } = 128;
@@ -19,6 +20,7 @@ public partial class Voip : Node3D
     {
         if (IsMultiplayerAuthority())
         {
+            Listener.MakeCurrent();
             Speakers.QueueFree();
             Microphone.Play();
             _capture = (AudioEffectCapture) AudioServer.GetBusEffect(AudioServer.GetBusIndex("Capture"), 0);
@@ -27,6 +29,7 @@ public partial class Voip : Node3D
         }
         else
         {
+            Listener.QueueFree();
             Speakers.Play();
             Microphone.QueueFree();
         }

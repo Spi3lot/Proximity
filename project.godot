@@ -35,6 +35,10 @@ window/vsync/vsync_mode=3
 
 project/assembly_name="Proximity"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/at-icons/plugin.cfg", "res://addons/raytraced_audio/plugin.cfg")
+
 [input]
 
 move_left={
@@ -76,6 +80,11 @@ jump={
 
 3d/physics_engine="Jolt Physics"
 common/physics_interpolation=true
+
+[raytraced_audio]
+
+ambient_bus=&"RaytracedAmbient"
+reverb_bus=&"RaytracedReverb"
 
 [rendering]
 
