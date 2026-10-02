@@ -27,6 +27,7 @@ public partial class CameraPivot : Node3D
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is not InputEventMouseMotion mouseMotionEvent) return;
+        if (Input.MouseMode is not Input.MouseModeEnum.Captured) return;
 
         Rotation = new Vector3(
             Mathf.Clamp(Rotation.X - mouseMotionEvent.Relative.Y * YawSensitivity, -1.57f, 1.57f),
