@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://rd5n63hl04tj" path="res://common/RealTimer.cs" id="3_i3pqv"]
 [ext_resource type="Script" uid="uid://cqso6al7fuqo3" path="res://player/CameraPivot.cs" id="3_qjkh3"]
 [ext_resource type="Script" uid="uid://ch4qeofe4txt8" path="res://player/CameraSpringArm.cs" id="3_yw30f"]
+[ext_resource type="Script" uid="uid://bgc7fpsryt4fc" path="res://audio/Voip.cs" id="5_g6k8r"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yw30f"]
 metallic = 1.0
@@ -34,13 +35,11 @@ properties/2/path = NodePath(".:linear_velocity")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 
-[node name="Player" type="RigidBody3D" unique_id=29676302 node_paths=PackedStringArray("Pivot", "FloorRayCast", "Speakers", "Microphone")]
+[node name="Player" type="RigidBody3D" unique_id=29676302 node_paths=PackedStringArray("Pivot", "FloorRayCast")]
 mass = 1.25
 script = ExtResource("1_4flbx")
 Pivot = NodePath("PositionOnly/CameraPivot")
 FloorRayCast = NodePath("PositionOnly/FloorRayCast")
-Speakers = NodePath("Audio/Speakers")
-Microphone = NodePath("Audio/Microphone")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1299459597]
 mesh = SubResource("SphereMesh_25s18")
@@ -78,16 +77,21 @@ MaxSpringLength = 10.0
 [node name="Audio" type="Node3D" parent="." unique_id=1076361426]
 metadata/_edit_lock_ = true
 
-[node name="Speakers" type="AudioStreamPlayer3D" parent="Audio" unique_id=1527236536]
+[node name="VoIP" type="Node3D" parent="Audio" unique_id=820084989 node_paths=PackedStringArray("Speakers", "Microphone")]
+script = ExtResource("5_g6k8r")
+Speakers = NodePath("Speakers")
+Microphone = NodePath("Microphone")
+
+[node name="Speakers" type="AudioStreamPlayer3D" parent="Audio/VoIP" unique_id=1527236536]
 stream = SubResource("AudioStreamGenerator_i3pqv")
 bus = &"Voice"
 
-[node name="Microphone" type="AudioStreamPlayer" parent="Audio" unique_id=1025608214]
+[node name="Microphone" type="AudioStreamPlayer" parent="Audio/VoIP" unique_id=1025608214]
 stream = SubResource("AudioStreamMicrophone_xspuc")
 volume_db = 24.0
 bus = &"Capture"
 
-[node name="AudioTransmissionTimer" type="Node" parent="Audio" unique_id=817960942]
+[node name="AudioTransmissionTimer" type="Node" parent="Audio/VoIP" unique_id=817960942]
 process_mode = 4
 script = ExtResource("3_i3pqv")
 SamplesPerPacket = 128
