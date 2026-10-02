@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://c1tdr7hntmtmk" path="res://player/PlayerSpawner.cs" id="1_h7iqs"]
 [ext_resource type="PackedScene" uid="uid://smuwsu0bjhd2" path="res://player/player.tscn" id="2_4fuuu"]
 [ext_resource type="Script" uid="uid://c4cydxjly6bk0" path="res://common/AudioDebugger.cs" id="3_dxrkv"]
+[ext_resource type="Shader" uid="uid://bv78h227m1dmi" path="res://game/terrain.gdshader" id="4_4fuuu"]
+[ext_resource type="Script" uid="uid://jvs0wtb5cf0f" path="res://game/Terrain.cs" id="4_dxrkv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h7iqs"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -15,10 +17,28 @@ sky_material = SubResource("ProceduralSkyMaterial_h7iqs")
 background_mode = 2
 sky = SubResource("Sky_4fuuu")
 
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_82v0y"]
-map_width = 33
-map_depth = 33
-map_data = PackedFloat32Array(0.555, 0, 1, 0.19, 1, 0, 1, 0.855, 0.41, 1, 1, 1.315, 0, 0, 0, 0, 0, 0, 0, 0.805, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.09, 0, 0, 0, 0, 0, 0.925, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.465, 1.055, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.57, 1.435, 0, 0, 0.545, 5.81, 3.86, 1.325, 0, 0, 0, 0, 4.545, 0, 0, 0, 0, 0, 0, 0, 4.675, 0, 0, 0, 0, 0, 0, 3.795, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.09, 0, 0, 0, 0, 0, 0, 0, 5.375, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.175, 0, 2.695, 0, 0, 1.785, 0, 0, 0)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dxrkv"]
+noise_type = 2
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4fuuu"]
+width = 2048
+height = 2048
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_dxrkv")
+invert = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h7iqs"]
+render_priority = 0
+shader = ExtResource("4_4fuuu")
+shader_parameter/height_scale = 50.0
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_4fuuu")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_g6k8r"]
+material = SubResource("ShaderMaterial_h7iqs")
+size = Vector2(2048, 2048)
+subdivide_width = 512
+subdivide_depth = 512
 
 [node name="Game" type="Node3D" unique_id=1231363186]
 
@@ -36,13 +56,18 @@ script = ExtResource("1_h7iqs")
 PlayerScene = ExtResource("2_4fuuu")
 
 [node name="Players" type="Node3D" parent="." unique_id=660874079]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 
 [node name="AudioDebugger" type="CanvasLayer" parent="." unique_id=1565564131]
 visible = false
 script = ExtResource("3_dxrkv")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=410761431]
+[node name="Terrain" type="StaticBody3D" parent="." unique_id=410761431 node_paths=PackedStringArray("MeshInstance", "CollisionShape")]
+script = ExtResource("4_dxrkv")
+MeshInstance = NodePath("MeshInstance3D")
+CollisionShape = NodePath("CollisionShape3D")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1926631276]
-shape = SubResource("HeightMapShape3D_82v0y")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain" unique_id=1362912674]
+mesh = SubResource("PlaneMesh_g6k8r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain" unique_id=1926631276]
