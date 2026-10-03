@@ -16,6 +16,12 @@ sky_material = SubResource("ProceduralSkyMaterial_h7iqs")
 [sub_resource type="Environment" id="Environment_dxrkv"]
 background_mode = 2
 sky = SubResource("Sky_4fuuu")
+ssr_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+adjustment_enabled = true
+adjustment_contrast = 1.25
+adjustment_saturation = 2.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_dxrkv"]
 noise_type = 2
