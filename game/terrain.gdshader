@@ -3,20 +3,20 @@ shader_type spatial;
 uniform float height_scale = 5.0;
 uniform sampler2D noise_tex;
 
-float get_height(vec2 uv) {
-    return height_scale * (texture(noise_tex, uv).r - 0.5);
+vec3 get_offset(vec2 uv) {
+    return height_scale * vec3(0, texture(noise_tex, uv).r - 0.5, 0);
 }
 
 void vertex() {
-    float height = get_height(UV);
-    VERTEX.y += height;
+    vec3 offset = get_offset(UV);
+    VERTEX += offset;
 
     const vec2 epsilon = vec2(0.01, 0);
-    float height_right = get_height(UV + epsilon.xy);
-    float height_up = get_height(UV + epsilon.yx);
+    vec3 offset_right = get_offset(UV + epsilon.xy);
+    vec3 offset_up = get_offset(UV + epsilon.yx);
 
-    vec3 tangent = normalize(vec3(epsilon.x, height_right - height, 0));
-    vec3 binormal = normalize(vec3(0, height_up - height, epsilon.x));
+    vec3 tangent = normalize(offset_right - offset + epsilon.xyy);
+    vec3 binormal = normalize(offset_up - offset + epsilon.yyx);
     NORMAL = normalize(cross(binormal, tangent));
 }
 void fragment() {
