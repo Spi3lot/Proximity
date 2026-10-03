@@ -11,7 +11,7 @@ void vertex() {
     vec3 offset = get_offset(UV);
     VERTEX += offset;
 
-    const vec2 epsilon = vec2(0.01, 0);
+    const vec2 epsilon = vec2(0.001, 0);
     vec3 offset_right = get_offset(UV + epsilon.xy);
     vec3 offset_up = get_offset(UV + epsilon.yx);
 
