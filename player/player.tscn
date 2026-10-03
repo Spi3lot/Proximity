@@ -93,6 +93,7 @@ Microphone = NodePath("Microphone")
 
 [node name="Speakers" type="AudioStreamPlayer3D" parent="Audio/VoIP" unique_id=1527236536]
 stream = SubResource("AudioStreamGenerator_i3pqv")
+attenuation_model = 1
 bus = &"Voice"
 script = ExtResource("6_boad6")
 metadata/_custom_type_script = "uid://dkb8ltjc6067n"

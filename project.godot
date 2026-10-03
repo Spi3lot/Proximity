@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [audio]
 
 buses/default_bus_layout="uid://pm1iq3t3ghch"
+general/3d_panning_strength=1.0
 driver/enable_input=true
 
 [autoload]
