@@ -20,5 +20,5 @@ void vertex() {
     NORMAL = normalize(cross(binormal, tangent));
 }
 void fragment() {
-	ALBEDO = 0.5 + 0.5 * (INV_VIEW_MATRIX * vec4(NORMAL, 0)).rgb;
+	ALBEDO = 0.5 + 0.5 * (mat3(INV_VIEW_MATRIX) * NORMAL);
 }
