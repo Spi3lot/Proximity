@@ -42,8 +42,8 @@ shader_parameter/noise_tex = SubResource("NoiseTexture2D_4fuuu")
 [sub_resource type="PlaneMesh" id="PlaneMesh_g6k8r"]
 material = SubResource("ShaderMaterial_h7iqs")
 size = Vector2(2048, 2048)
-subdivide_width = 512
-subdivide_depth = 512
+subdivide_width = 1024
+subdivide_depth = 1024
 
 [node name="Game" type="Node3D" unique_id=1231363186]
 
