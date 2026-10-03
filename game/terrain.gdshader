@@ -19,6 +19,7 @@ void vertex() {
     vec3 binormal = normalize(offset_up - offset + epsilon.yyx);
     NORMAL = normalize(cross(binormal, tangent));
 }
+
 void fragment() {
-	ALBEDO = 0.5 + 0.5 * (mat3(INV_VIEW_MATRIX) * NORMAL);
+    ALBEDO = 0.5 + 0.5 * (mat3(INV_VIEW_MATRIX) * NORMAL);
 }
