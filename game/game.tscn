@@ -17,7 +17,6 @@ sky_material = SubResource("ProceduralSkyMaterial_h7iqs")
 background_mode = 2
 sky = SubResource("Sky_4fuuu")
 ssr_enabled = true
-sdfgi_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.005
 volumetric_fog_ambient_inject = 5.0
@@ -64,6 +63,9 @@ PlayerScene = ExtResource("2_4fuuu")
 
 [node name="Players" type="Node3D" parent="." unique_id=660874079]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="." unique_id=376856047]
+size = Vector3(2048, 50, 2048)
 
 [node name="AudioDebugger" type="CanvasLayer" parent="." unique_id=1565564131]
 visible = false
