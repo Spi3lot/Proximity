@@ -101,7 +101,7 @@ metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 
 [node name="Microphone" type="AudioStreamPlayer" parent="Audio/VoIP" unique_id=1025608214]
 stream = SubResource("AudioStreamMicrophone_xspuc")
-volume_db = 24.0
+volume_db = 6.0
 bus = &"Capture"
 
 [node name="AudioTransmissionTimer" type="Node" parent="Audio/VoIP" unique_id=817960942]
