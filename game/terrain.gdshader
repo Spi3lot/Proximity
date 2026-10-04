@@ -22,4 +22,6 @@ void vertex() {
 
 void fragment() {
     ALBEDO = 0.5 + 0.5 * (mat3(INV_VIEW_MATRIX) * NORMAL);
+	METALLIC = 1.0;
+	ROUGHNESS = 0.0;
 }

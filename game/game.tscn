@@ -17,6 +17,7 @@ sky_material = SubResource("ProceduralSkyMaterial_h7iqs")
 background_mode = 2
 sky = SubResource("Sky_4fuuu")
 ssr_enabled = true
+sdfgi_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.01
 adjustment_enabled = true
