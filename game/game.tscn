@@ -17,6 +17,7 @@ sky_material = SubResource("ProceduralSkyMaterial_h7iqs")
 background_mode = 2
 sky = SubResource("Sky_4fuuu")
 ssr_enabled = true
+sdfgi_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.005
 volumetric_fog_ambient_inject = 5.0
@@ -56,9 +57,6 @@ environment = SubResource("Environment_dxrkv")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=716185535]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="Environment" unique_id=376856047]
-size = Vector3(2048, 50, 2048)
 
 [node name="Terrain" type="StaticBody3D" parent="Environment" unique_id=410761431 node_paths=PackedStringArray("MeshInstance", "CollisionShape")]
 script = ExtResource("4_dxrkv")
