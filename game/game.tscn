@@ -66,6 +66,7 @@ MeshInstance = NodePath("MeshInstance3D")
 CollisionShape = NodePath("CollisionShape3D")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Terrain" unique_id=1362912674]
+extra_cull_margin = 25.0
 mesh = SubResource("PlaneMesh_g6k8r")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Terrain" unique_id=1926631276]
