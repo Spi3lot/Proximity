@@ -9,7 +9,6 @@ namespace Proximity.Audio;
 public partial class Voip : Node3D
 {
     private AudioEffectCapture _capture;
-    private float[] _capturedSamples;
 
     [Export] public AudioListener3D Listener { get; set; }
     [Export] public AudioStreamPlayer3D Speakers { get; set; }
@@ -24,7 +23,6 @@ public partial class Voip : Node3D
             Speakers.QueueFree();
             Microphone.Play();
             _capture = (AudioEffectCapture) AudioServer.GetBusEffect(AudioServer.GetBusIndex("Capture"), 0);
-            _capturedSamples = new float[MaxSamplesPerPacket];
             AudioDebugger.Instance.MaxSamplesPerPacket = MaxSamplesPerPacket;
         }
         else
@@ -43,13 +41,14 @@ public partial class Voip : Node3D
         {
             int samplesToSend = Mathf.Min(_capture.GetFramesAvailable(), MaxSamplesPerPacket);
             var capturedFrames = _capture.GetBuffer(samplesToSend);
+            float[] capturedSamples = new float[samplesToSend];
 
             for (int i = 0; i < samplesToSend; i++)
             {
-                _capturedSamples[i] = (capturedFrames[i].X + capturedFrames[i].Y) / 2;
+                capturedSamples[i] = (capturedFrames[i].X + capturedFrames[i].Y) / 2;
             }
 
-            Rpc(MethodName.OutputVoice, _capturedSamples[..samplesToSend], AudioServer.GetMixRate());
+            Rpc(MethodName.OutputVoice, capturedSamples, AudioServer.GetMixRate());
             AudioDebugger.Instance.LogEgress(samplesToSend);
         }
     }
