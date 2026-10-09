@@ -59,6 +59,7 @@ transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545
 shadow_enabled = true
 
 [node name="Terrain" type="StaticBody3D" parent="Environment" unique_id=410761431 node_paths=PackedStringArray("MeshInstance", "CollisionShape")]
+collision_mask = 2
 script = ExtResource("4_dxrkv")
 MeshInstance = NodePath("MeshInstance3D")
 CollisionShape = NodePath("CollisionShape3D")
