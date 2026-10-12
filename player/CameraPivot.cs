@@ -12,7 +12,7 @@ public partial class CameraPivot : Node3D
     {
         if (!IsMultiplayerAuthority())
         {
-            QueueFree();
+            SpringArm.QueueFree();
             return;
         }
 
