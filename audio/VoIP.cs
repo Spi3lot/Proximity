@@ -13,7 +13,6 @@ public partial class Voip : Node3D
     [Export] public AudioListener3D Listener { get; set; }
     [Export] public AudioStreamPlayer3D Speakers { get; set; }
     [Export] public AudioStreamPlayer Microphone { get; set; }
-    [Export] public int MaxSamplesPerPacket { get; set; } = 128;
 
     public override void _Ready()
     {
@@ -38,7 +37,7 @@ public partial class Voip : Node3D
 
         while (_capture.GetFramesAvailable() > 0)
         {
-            int samplesToSend = Mathf.Min(_capture.GetFramesAvailable(), MaxSamplesPerPacket);
+            int samplesToSend = Mathf.Min(_capture.GetFramesAvailable(), AudioSettings.Instance.MaxSamplesPerPacket);
             var capturedFrames = _capture.GetBuffer(samplesToSend);
             float[] capturedSamples = new float[samplesToSend];
 

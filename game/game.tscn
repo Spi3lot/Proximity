@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://c4cydxjly6bk0" path="res://common/AudioDebugger.cs" id="3_dxrkv"]
 [ext_resource type="Shader" uid="uid://bv78h227m1dmi" path="res://game/terrain.gdshader" id="4_4fuuu"]
 [ext_resource type="Script" uid="uid://jvs0wtb5cf0f" path="res://game/Terrain.cs" id="4_dxrkv"]
+[ext_resource type="Script" uid="uid://23rxab52rckw" path="res://audio/AudioSettings.cs" id="5_dakft"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_h7iqs"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -78,6 +79,9 @@ PlayerScene = ExtResource("2_4fuuu")
 
 [node name="Players" type="Node3D" parent="." unique_id=660874079]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, 0)
+
+[node name="AudioSettings" type="Node" parent="." unique_id=1162875103]
+script = ExtResource("5_dakft")
 
 [node name="AudioDebugger" type="CanvasLayer" parent="." unique_id=1565564131]
 visible = false
