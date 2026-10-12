@@ -23,7 +23,6 @@ public partial class Voip : Node3D
             Speakers.QueueFree();
             Microphone.Play();
             _capture = (AudioEffectCapture) AudioServer.GetBusEffect(AudioServer.GetBusIndex("Capture"), 0);
-            AudioDebugger.Instance.MaxSamplesPerPacket = MaxSamplesPerPacket;
         }
         else
         {

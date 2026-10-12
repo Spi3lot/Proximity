@@ -21,7 +21,6 @@ public partial class AudioDebugger : CanvasLayer
     private double _ppsTimer;
 
     public static AudioDebugger Instance { get; private set; }
-    public int MaxSamplesPerPacket { get; set; }
 
     public override void _EnterTree()
     {
